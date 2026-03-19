@@ -1,5 +1,5 @@
 // src/services/firestore.js
-// Todas las operaciones de lectura y escritura a Firestore
+// Operaciones Firestore — v2 con soporte de mappoints
 
 import {
   collection, addDoc, query, where, orderBy,
@@ -8,12 +8,13 @@ import {
 import { db } from './firebase'
 
 // ── Enviar reporte anónimo ────────────────────────────────────
-export async function submitReport({ income, currency, country, city, profession, experience }) {
-  const now = new Date()
+export async function submitReport({ income, currency, country, city, profession, experience, lat, lng }) {
+  const now     = new Date()
   const expireAt = new Date(now)
-  expireAt.setDate(expireAt.getDate() + 30) // TTL 30 días
+  expireAt.setDate(expireAt.getDate() + 30)
 
-  return addDoc(collection(db, 'reports'), {
+  // Guardar en 'reports' (para promedios)
+  await addDoc(collection(db, 'reports'), {
     income:     parseFloat(income),
     currency,
     country,
@@ -23,20 +24,32 @@ export async function submitReport({ income, currency, country, city, profession
     timestamp:  serverTimestamp(),
     expireAt:   Timestamp.fromDate(expireAt),
   })
+
+  // Guardar en 'mappoints' (para el mapa) — solo si hay coordenadas
+  if (lat && lng) {
+    await addDoc(collection(db, 'mappoints'), {
+      income:     parseFloat(income),
+      currency,
+      country,
+      city:       city.trim() || 'Sin especificar',
+      profession,
+      experience,
+      lat:        parseFloat(lat),
+      lng:        parseFloat(lng),
+      timestamp:  serverTimestamp(),
+      expireAt:   Timestamp.fromDate(expireAt),
+    })
+  }
 }
 
 // ── Suscripción en tiempo real a promedios ────────────────────
 export function subscribeToAverages({ country, profession, experience }, callback) {
   let q = query(collection(db, 'averages'), orderBy('count', 'desc'), limit(50))
-
-  if (country    && country    !== 'Todos')  q = query(q, where('country',    'isEqualTo', country))
-  if (profession && profession !== 'Todas')  q = query(q, where('profession', 'isEqualTo', profession))
-  if (experience && experience !== 'Todas')  q = query(q, where('experience', 'isEqualTo', experience))
-
-  return onSnapshot(q, snap => {
-    const data = snap.docs.map(d => ({ id: d.id, ...d.data() }))
-    callback(data)
-  }, err => console.error('Firestore error:', err))
+  if (country    && country    !== 'Todos')  q = query(q, where('country',    '==', country))
+  if (profession && profession !== 'Todas')  q = query(q, where('profession', '==', profession))
+  if (experience && experience !== 'Todas')  q = query(q, where('experience', '==', experience))
+  return onSnapshot(q, snap => callback(snap.docs.map(d => ({ id: d.id, ...d.data() }))),
+    err => console.error('Firestore error:', err))
 }
 
 // ── Promedio global ───────────────────────────────────────────
@@ -46,14 +59,14 @@ export function subscribeToGlobal(callback) {
   })
 }
 
-// ── Metadatos globales (total reportes) ───────────────────────
+// ── Metadatos globales ────────────────────────────────────────
 export function subscribeToMeta(callback) {
   return onSnapshot(doc(db, 'averages', '__meta__'), snap => {
     callback(snap.exists() ? snap.data() : { totalReports: 0 })
   })
 }
 
-// ── Helpers de formato ─────────────────────────────────────────
+// ── Formato de ingreso ────────────────────────────────────────
 export function formatIncome(value, currency = 'USD') {
   const symbols = { USD: 'US$', ARS: '$', EUR: '€', BRL: 'R$', CLP: '$', MXN: '$', COP: '$', UYU: '$U' }
   const sym = symbols[currency] ?? '$'
