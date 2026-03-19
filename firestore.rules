@@ -1,0 +1,31 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Reportes: cualquiera puede crear, nadie puede leer/editar/borrar
+    match /reports/{id} {
+      allow read:   if false;
+      allow create: if
+        request.resource.data.keys().hasAll(['income','currency','country','city','profession','experience','timestamp','expireAt']) &&
+        request.resource.data.income    is number && request.resource.data.income > 0 && request.resource.data.income < 100000000 &&
+        request.resource.data.currency  is string && request.resource.data.currency.size()  <= 5 &&
+        request.resource.data.country   is string && request.resource.data.country.size()   <= 60 &&
+        request.resource.data.city      is string && request.resource.data.city.size()      <= 80 &&
+        request.resource.data.profession is string && request.resource.data.profession.size() <= 50 &&
+        request.resource.data.experience is string && request.resource.data.experience.size() <= 20 &&
+        request.resource.data.timestamp is timestamp &&
+        !request.resource.data.keys().hasAny(['userId','ip','deviceId','email']);
+      allow update, delete: if false;
+    }
+
+    // Promedios: lectura pública, escritura solo Cloud Functions (Admin SDK)
+    match /averages/{id} {
+      allow read:  if true;
+      allow write: if false;
+    }
+
+    match /{doc=**} {
+      allow read, write: if false;
+    }
+  }
+}
