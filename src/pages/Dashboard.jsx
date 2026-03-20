@@ -1,4 +1,4 @@
-// src/pages/Dashboard.jsx — v2 con mapa
+// src/pages/Dashboard.jsx — v3 con botón compartir
 import { useAverages, useGlobalAverage } from '../hooks/useAverages'
 import { useApp } from '../contexts/AppContext'
 import { formatIncome } from '../services/firestore'
@@ -6,6 +6,7 @@ import { COUNTRIES, PROFESSIONS, EXPERIENCE } from '../constants'
 import IncomeCard, { IncomeCardSkeleton } from '../components/IncomeCard'
 import ProfChart from '../components/ProfChart'
 import IncomeMap from '../components/IncomeMap'
+import ShareButton from '../components/ShareButton'
 import { LiveDot, FilterPill, EmptyState, Select } from '../components/UI'
 
 export default function Dashboard({ onNavigate }) {
@@ -14,6 +15,10 @@ export default function Dashboard({ onNavigate }) {
   const { global: globalAvg, meta, loading: loadingGlobal } = useGlobalAverage()
 
   const setFilter = (key, val) => setFilters(f => ({ ...f, [key]: val }))
+
+  const shareText = globalAvg
+    ? `📊 El ingreso neto mensual promedio global en IncomeAnon es ${formatIncome(globalAvg.avgIncome, globalAvg.currency)}. Reportá el tuyo de forma 100% anónima 👇`
+    : '📊 Mirá los salarios reales reportados anónimamente en IncomeAnon 👇'
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-5 pb-24 sm:pb-8 space-y-6">
@@ -38,16 +43,13 @@ export default function Dashboard({ onNavigate }) {
           <span className="text-xs bg-white/10 text-white/60 px-3 py-1.5 rounded-full font-medium">
             👥 {meta.totalReports?.toLocaleString('es-AR') ?? '0'} reportes anónimos
           </span>
-          <button
-            onClick={() => onNavigate('report')}
-            className="text-xs bg-brand-green text-black px-3 py-1.5 rounded-full font-bold hover:bg-brand-green/90 transition-colors"
-          >
+          <button onClick={() => onNavigate('report')} className="text-xs bg-brand-green text-black px-3 py-1.5 rounded-full font-bold hover:bg-brand-green/90 transition-colors">
             + Reportar el mío
           </button>
         </div>
       </div>
 
-      {/* ── Mapa mundi ─────────────────────────────────── */}
+      {/* ── Mapa ───────────────────────────────────────── */}
       <IncomeMap />
 
       {/* ── Filtros ────────────────────────────────────── */}
@@ -62,9 +64,7 @@ export default function Dashboard({ onNavigate }) {
             )}
           </h2>
           {activeCount > 0 && (
-            <button onClick={clearFilters} className="text-xs text-white/40 hover:text-red-400 transition-colors">
-              Limpiar todo
-            </button>
+            <button onClick={clearFilters} className="text-xs text-white/40 hover:text-red-400 transition-colors">Limpiar todo</button>
           )}
         </div>
         <div className="grid grid-cols-3 gap-2">
@@ -89,11 +89,9 @@ export default function Dashboard({ onNavigate }) {
             {Array(6).fill(0).map((_, i) => <IncomeCardSkeleton key={i} />)}
           </div>
         ) : averages.length === 0 ? (
-          <EmptyState
-            icon={activeCount > 0 ? '🔍' : '📊'}
+          <EmptyState icon={activeCount > 0 ? '🔍' : '📊'}
             title={activeCount > 0 ? 'Sin datos para esos filtros' : '¡Sé el primero en reportar!'}
-            subtitle={activeCount > 0 ? 'Probá con otros filtros.' : 'Los datos aparecen cuando la comunidad reporta.'}
-          />
+            subtitle={activeCount > 0 ? 'Probá con otros filtros.' : 'Los datos aparecen cuando la comunidad reporta.'} />
         ) : (
           <div className="grid grid-cols-2 gap-3">
             {averages.map((avg, i) => <IncomeCard key={avg.id} avg={avg} index={i} />)}
@@ -110,6 +108,13 @@ export default function Dashboard({ onNavigate }) {
           </div>
         </div>
       )}
+
+      {/* ── Compartir ──────────────────────────────────── */}
+      <ShareButton
+        title="IncomeAnon — Ingresos Anónimos"
+        text={shareText}
+        url="https://ingresos-anonimos.web.app"
+      />
     </div>
   )
 }

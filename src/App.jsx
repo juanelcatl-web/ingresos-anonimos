@@ -1,4 +1,4 @@
-// src/App.jsx
+// src/App.jsx — v3 completo
 import { useState } from 'react'
 import { AppProvider } from './contexts/AppContext'
 import Header        from './components/Header'
@@ -9,14 +9,16 @@ import Stats         from './pages/Stats'
 import About         from './pages/About'
 import Privacy       from './pages/Privacy'
 import WorldSalaries from './pages/WorldSalaries'
+import Calculator    from './pages/Calculator'
 
 const PAGES = {
-  dashboard: Dashboard,
-  report:    Report,
-  stats:     Stats,
-  world:     WorldSalaries,
-  about:     About,
-  privacy:   Privacy,
+  dashboard:  Dashboard,
+  report:     Report,
+  stats:      Stats,
+  world:      WorldSalaries,
+  calculator: Calculator,
+  about:      About,
+  privacy:    Privacy,
 }
 
 function AppShell() {
