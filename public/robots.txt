@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ingresos-anonimos.web.app/sitemap.xml
