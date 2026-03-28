@@ -31,6 +31,12 @@ export default defineConfig({
         skipWaiting: true,
         clientsClaim: true,
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
+        // Excluir archivos especiales del service worker
+navigateFallbackDenylist: [
+  /^\/ads\.txt$/,
+  /^\/sitemap\.xml$/,
+  /^\/robots\.txt$/,
+],
         runtimeCaching: [
           {
             // Firestore — red primero, caché como fallback
