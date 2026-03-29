@@ -2,16 +2,56 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>La importancia de la transparencia salarial - IncomeAnon</title>
     <style>
-        body { font-family: sans-serif; line-height: 1.6; max-width: 800px; margin: 40px auto; padding: 20px; background: #1a1a1a; color: #eee; }
-        h1 { color: #00C897; }
-        .back { color: #00C897; text-decoration: none; }
+        :root { --primary: #00C897; --bg: #111827; --card: #1f2937; --text: #f3f4f6; }
+        body { font-family: 'Inter', -apple-system, sans-serif; line-height: 1.8; max-width: 850px; margin: 0 auto; padding: 20px; background-color: var(--bg); color: var(--text); }
+        .container { background: var(--card); padding: 40px; border-radius: 16px; border: 1px solid #374151; margin-top: 20px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+        h1 { color: var(--primary); font-size: 2.5rem; line-height: 1.2; margin-bottom: 1.5rem; }
+        h2 { color: #fff; margin-top: 2rem; border-left: 4px solid var(--primary); padding-left: 15px; }
+        p { margin-bottom: 1.5rem; font-size: 1.1rem; color: #d1d5db; }
+        .back { color: var(--primary); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; margin-bottom: 20px; transition: opacity 0.2s; }
+        .back:hover { opacity: 0.8; }
+        .highlight { background: rgba(0, 200, 151, 0.1); padding: 20px; border-radius: 8px; border: 1px dashed var(--primary); font-style: italic; margin: 30px 0; }
+        footer { margin-top: 50px; text-align: center; font-size: 0.9rem; color: #6b7280; border-top: 1px solid #374151; padding-top: 20px; }
+        @media (max-width: 600px) { h1 { font-size: 1.8rem; } .container { padding: 20px; } }
     </style>
 </head>
 <body>
     <a href="/" class="back">← Volver a IncomeAnon</a>
-    <h1>La importancia de la transparencia salarial en la era digital</h1>
-    <p>En un mercado laboral dinámico, el tabú sobre cuánto ganamos es una barrera...</p>
-    </body>
+    
+    <div class="container">
+        <header>
+            <h1>La importancia de la transparencia salarial en la era digital</h1>
+            <p><strong>Por el equipo de IncomeAnon</strong> • Actualizado Marzo 2026</p>
+        </header>
+
+        <section>
+            <p>En un mercado laboral globalizado y altamente dinámico, el secreto sobre los salarios sigue siendo uno de los tabúes más persistentes en las organizaciones. Sin embargo, la tendencia hacia la transparencia salarial está ganando terreno, no solo como una demanda ética, sino como una herramienta fundamental para la eficiencia del mercado.</p>
+            
+            <h2>1. Eliminando la asimetría de información</h2>
+            <p>Históricamente, las empresas han tenido una ventaja estratégica: conocen los rangos salariales de todo el mercado, mientras que el candidato suele negociar a ciegas. Este silencio beneficia la asimetría, permitiendo disparidades que no se basan en el mérito o la capacidad, sino en la habilidad de negociación individual o en presupuestos arbitrarios.</p>
+            <p>Plataformas como <strong>IncomeAnon</strong> democratizan el acceso a estos datos. Cuando un profesional sabe cuánto gana un par con su misma experiencia en su ciudad o país, la conversación laboral se vuelve honesta y basada en hechos objetivos.</p>
+
+            <div class="highlight">
+                "La transparencia salarial no busca exponer cuánto gana una persona específica, sino revelar el valor real de un rol en el mercado actual."
+            </div>
+
+            <h2>2. El impacto en la equidad y la brecha de género</h2>
+            <p>Diversos estudios han demostrado que la opacidad salarial castiga desproporcionadamente a las minorías y perpetúa la brecha de género. En ausencia de rangos públicos, los sesgos inconscientes tienden a influir en las ofertas iniciales.</p>
+            <p>Al hacer públicos los promedios reales de forma anónima, se crea un estándar visible. La transparencia obliga a las empresas a justificar las diferencias salariales mediante métricas claras de rendimiento y experiencia, fomentando un entorno laboral mucho más justo y equitativo.</p>
+
+            <h2>3. Ventajas para el sector IT y el Trabajo Remoto</h2>
+            <p>Para quienes trabajamos desde Argentina o Latinoamérica hacia el mundo, la dispersión de ingresos es masiva. Un desarrollador puede recibir ofertas que varían en un 200% para el mismo puesto dependiendo de la ubicación de la empresa o el tipo de contrato. En este escenario, contar con reportes anónimos de colegas locales permite establecer un piso digno de negociación y evitar la infravaloración del talento regional.</p>
+
+            <h2>Conclusión</h2>
+            <p>Compartir tus ingresos de forma anónima es un acto de solidaridad profesional. Al alimentar bases de datos abiertas, estamos construyendo un ecosistema donde el talento se valora por lo que aporta, y donde la información deja de ser un privilegio de pocos para convertirse en un derecho de todos los trabajadores.</p>
+        </section>
+
+        <footer>
+            © 2026 IncomeAnon - Estadísticas de salarios anónimas y reales.
+        </footer>
+    </div>
+</body>
 </html>

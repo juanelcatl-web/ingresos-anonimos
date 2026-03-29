@@ -1,27 +1,16 @@
 {
   "hosting": {
-    "public": "dist",
-    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
-    "rewrites": [
-      { "source": "**", "destination": "/index.html" }
+    "public": ".",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
     ],
-    "headers": [
+    "rewrites": [
       {
-        "source": "**/*.@(js|css)",
-        "headers": [{ "key": "Cache-Control", "value": "max-age=31536000, immutable" }]
-      },
-      {
-        "source": "/ads.txt",
-        "headers": [{ "key": "Content-Type", "value": "text/plain" }]
+        "source": "!/@(ads.txt|sitemap.xml|robots.txt|index.html|privacidad.html|terminos.html|adsense.html|admob.html|seo-nicho.html)",
+        "destination": "/index.html"
       }
     ]
-  },
-  "firestore": {
-    "rules": "firestore.rules",
-    "indexes": "firestore.indexes.json"
-  },
-  "functions": [{
-    "source": "functions",
-    "codebase": "default"
-  }]
+  }
 }
