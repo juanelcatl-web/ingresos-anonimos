@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": ".",
+    "public": "dist",
     "ignore": [
       "firebase.json",
       "**/.*",
@@ -8,7 +8,7 @@
     ],
     "rewrites": [
       {
-        "source": "!/@(ads.txt|sitemap.xml|robots.txt|index.html|privacidad.html|terminos.html|adsense.html|admob.html|seo-nicho.html)",
+        "source": "!/@(ads.txt|sitemap.xml|robots.txt|index.html|privacidad.html|terminos.html|adsense.html|admob.html|seo-nicho.html|sobre-ingresos-anonimos.html|salarios-por-profesion.html|faq.html|blog/**)",
         "destination": "/index.html"
       }
     ]
